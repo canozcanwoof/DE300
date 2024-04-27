@@ -1,0 +1,705 @@
+Update heart_disease
+Set painloc= ABS(random() %2)
+Where painloc IS NULL;
+
+Update heart_disease
+Set painexer= ABS(random() %2)
+Where painexer IS NULL;
+
+Update heart_disease
+Set relrest= ABS(random() %2)
+Where relrest IS NULL;
+
+UPDATE heart_disease
+SET pncaden = painloc + painexer + relrest;
+
+UPDATE heart_disease
+SET smoke = CASE
+WHEN cigs > 0 THEN 1
+ELSE 0
+END;
+
+UPDATE heart_disease
+SET cigs = COALESCE(cigs, 0);
+
+UPDATE heart_disease
+SET years = COALESCE(years, 0);
+
+
+--if dm = 1 
+--26/87 percent of fbs is 0 if fbs is NULL
+UPDATE heart_disease
+SET fbs = CASE
+            WHEN dm = 1 AND fbs IS NULL AND RANDOM() % 87 < 26 THEN 0
+            ELSE fbs
+          END
+WHERE dm = 1 AND fbs IS NULL;
+
+UPDATE heart_disease
+SET fbs = CASE
+            WHEN dm = 0 AND RANDOM() % 100 < 67 THEN 0
+            ELSE fbs
+          END
+WHERE dm = 0;
+
+-- Update dm = 0 based on fbs = 0 percentage
+UPDATE heart_disease
+SET dm = CASE
+            WHEN fbs = 0 AND dm IS NULL AND RANDOM() % 100 < (
+                SELECT CAST(COUNT(*) AS FLOAT) * 100.0
+                / (SELECT COUNT(*) FROM heart_disease WHERE fbs = 0 AND dm IS NOT NULL AND fbs IS NOT NULL)
+                FROM heart_disease
+                WHERE dm = 0 AND fbs = 0 AND dm IS NOT NULL AND fbs IS NOT NULL
+            ) THEN 0
+            WHEN fbs = 0 AND dm IS NULL THEN 1
+            ELSE dm
+         END
+WHERE dm IS NULL AND fbs IS NOT NULL;
+
+-- Update dm = 1 based on fbs = 1 percentage
+UPDATE heart_disease
+SET dm = CASE
+            WHEN fbs = 1 AND dm IS NULL AND RANDOM() % 100 < (
+                SELECT CAST(COUNT(*) AS FLOAT) * 100.0
+                / (SELECT COUNT(*) FROM heart_disease WHERE fbs = 1 AND dm IS NOT NULL AND fbs IS NOT NULL)
+                FROM heart_disease
+                WHERE dm = 1 AND fbs = 1 AND dm IS NOT NULL AND fbs IS NOT NULL
+            ) THEN 1
+            WHEN fbs = 1 AND dm IS NULL THEN 0
+            ELSE dm
+         END
+WHERE dm IS NULL AND fbs IS NOT NULL;
+
+UPDATE heart_disease
+SET thal = CASE 
+             WHEN RANDOM() % 3 = 0 THEN 3
+             WHEN RANDOM() % 3 = 1 THEN 6
+             ELSE 7
+           END
+WHERE thal IS NULL;
+
+UPDATE heart_disease
+SET thaltime = thadulr
+WHERE thaltime IS NULL
+AND (ABS(RANDOM()) % 100) < 40;
+
+UPDATE heart_disease
+SET thaltime = 0
+WHERE thaltime IS NULL
+AND (ABS(RANDOM()) % 100) < 25;
+
+
+UPDATE heart_disease
+SET thaltime = CASE 
+                    WHEN thadulr < 6 THEN 3
+                    WHEN thadulr >= 6 THEN 6
+                END
+
+WHERE thaltime IS NULL
+AND (ABS(RANDOM()) % 100) < 50
+LIMIT (SELECT COUNT(*) FROM heart_disease WHERE thaltime IS NULL) / 2;
+
+UPDATE heart_disease
+SET thaltime = CAST(thadulr AS INT)
+WHERE thaltime IS NULL
+AND (ABS(RANDOM()) % 100) >= 50;
+
+UPDATE heart_disease
+SET thadulr = (
+    SELECT AVG(thadulr) AS median_value
+    FROM (
+        SELECT thadulr
+        FROM heart_disease
+        WHERE thadulr IS NOT NULL
+        ORDER BY thadulr
+        LIMIT 2 - (SELECT COUNT(*) FROM heart_disease WHERE thadulr IS NULL) % 2
+
+        OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease WHERE thadulr IS NULL)
+    )
+)
+WHERE thadulr IS NULL;
+
+
+
+
+UPDATE heart_disease
+
+SET age = NULL
+
+WHERE sex IS NULL;
+
+
+
+
+
+
+
+UPDATE heart_disease
+
+SET painloc = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET painexer = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET relrest = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET pncaden = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET cp = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET trestbps = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET htn = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET chol = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET smoke = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET cigs = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET years = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET fbs = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET dm = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET famhist = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET restecg = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET ekgmo = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET 'ekgday(day'     = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET ekgyr = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET dig = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET prop = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET nitr = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET pro = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET diuretic = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET proto = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thadulr = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thaltime = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET met = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thalach = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thalrest = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET tpeakbps = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET tpeakbpd = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET dummy = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET trestbpd = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET exang = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET xhypo = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET oldpeak = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET slope = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET rldv5 = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET rldv5e = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET ca = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET restckm = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET exerckm = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET restef = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET restwm = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET exeref = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET exerwm = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thal = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thalsev = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET thalpul = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET earlobe = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET cmo = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET cday = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET cyr = NULL
+
+WHERE sex IS NULL;
+
+
+
+UPDATE heart_disease
+
+SET target = NULL
+
+WHERE sex IS NULL;
+
+
+
+-- Compute statistical measures for numerical columns
+
+SELECT 
+
+    -- Age
+
+    AVG(age) AS mean_age,
+
+    (SELECT AVG(age) FROM (SELECT age FROM heart_disease ORDER BY age LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_age,
+
+    (SELECT age AS mode_age FROM heart_disease GROUP BY age ORDER BY COUNT(*) DESC LIMIT 1) AS mode_age,
+
+    MIN(age) AS min_age,
+
+    MAX(age) AS max_age,
+
+
+
+    -- Sex (Assuming 0 = female, 1 = male)
+
+    AVG(sex) AS mean_sex,
+
+    (SELECT AVG(sex) FROM (SELECT sex FROM heart_disease ORDER BY sex LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_sex,
+
+    (SELECT sex AS mode_sex FROM heart_disease GROUP BY sex ORDER BY COUNT(*) DESC LIMIT 1) AS mode_sex,
+
+
+
+    -- cp
+
+    AVG(cp) AS mean_cp,
+
+    (SELECT AVG(cp) FROM (SELECT cp FROM heart_disease ORDER BY cp LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_cp,
+
+    (SELECT cp AS mode_cp FROM heart_disease GROUP BY cp ORDER BY COUNT(*) DESC LIMIT 1) AS mode_cp,
+
+
+
+    -- trestbps
+
+    AVG(trestbps) AS mean_trestbps,
+
+    (SELECT AVG(trestbps) FROM (SELECT trestbps FROM heart_disease ORDER BY trestbps LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_trestbps,
+
+    (SELECT trestbps AS mode_trestbps FROM heart_disease GROUP BY trestbps ORDER BY COUNT(*) DESC LIMIT 1) AS mode_trestbps,
+
+
+
+    -- chol
+
+    AVG(chol) AS mean_chol,
+
+    (SELECT AVG(chol) FROM (SELECT chol FROM heart_disease ORDER BY chol LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_chol,
+
+    (SELECT chol AS mode_chol FROM heart_disease GROUP BY chol ORDER BY COUNT(*) DESC LIMIT 1) AS mode_chol,
+
+
+
+    -- fbs
+
+    AVG(fbs) AS mean_fbs,
+
+    (SELECT AVG(fbs) FROM (SELECT fbs FROM heart_disease ORDER BY fbs LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_fbs,
+
+    (SELECT fbs AS mode_fbs FROM heart_disease GROUP BY fbs ORDER BY COUNT(*) DESC LIMIT 1) AS mode_fbs,
+
+
+
+    -- restecg
+
+    AVG(restecg) AS mean_restecg,
+
+    (SELECT AVG(restecg) FROM (SELECT restecg FROM heart_disease ORDER BY restecg LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_restecg,
+
+    (SELECT restecg AS mode_restecg FROM heart_disease GROUP BY restecg ORDER BY COUNT(*) DESC LIMIT 1) AS mode_restecg,
+
+
+
+    -- thalach
+
+    AVG(thalach) AS mean_thalach,
+
+    (SELECT AVG(thalach) FROM (SELECT thalach FROM heart_disease ORDER BY thalach LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_thalach,
+
+    (SELECT thalach AS mode_thalach FROM heart_disease GROUP BY thalach ORDER BY COUNT(*) DESC LIMIT 1) AS mode_thalach,
+
+
+
+    -- exang
+
+    AVG(exang) AS mean_exang,
+
+    (SELECT AVG(exang) FROM (SELECT exang FROM heart_disease ORDER BY exang LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_exang,
+
+    (SELECT exang AS mode_exang FROM heart_disease GROUP BY exang ORDER BY COUNT(*) DESC LIMIT 1) AS mode_exang,
+
+
+
+    -- oldpeak
+
+    AVG(oldpeak) AS mean_oldpeak,
+
+    (SELECT AVG(oldpeak) FROM (SELECT oldpeak FROM heart_disease ORDER BY oldpeak LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_oldpeak,
+
+    (SELECT oldpeak AS mode_oldpeak FROM heart_disease GROUP BY oldpeak ORDER BY COUNT(*) DESC LIMIT 1) AS mode_oldpeak,
+
+
+
+    -- slope
+
+    AVG(slope) AS mean_slope,
+
+    (SELECT AVG(slope) FROM (SELECT slope FROM heart_disease ORDER BY slope LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_slope,
+
+    (SELECT slope AS mode_slope FROM heart_disease GROUP BY slope ORDER BY COUNT(*) DESC LIMIT 1) AS mode_slope,
+
+
+
+    -- ca
+
+    AVG(ca) AS mean_ca,
+
+    (SELECT AVG(ca) FROM (SELECT ca FROM heart_disease ORDER BY ca LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_ca,
+
+    (SELECT ca AS mode_ca FROM heart_disease GROUP BY ca ORDER BY COUNT(*) DESC LIMIT 1) AS mode_ca,
+
+
+
+    -- thal
+
+    AVG(thal) AS mean_thal,
+
+    (SELECT AVG(thal) FROM (SELECT thal FROM heart_disease ORDER BY thal LIMIT 2 - (SELECT COUNT(*) FROM heart_disease) % 2 OFFSET (SELECT (COUNT(*) - 1) / 2 FROM heart_disease))) AS median_thal,
+
+    (SELECT thal AS mode_thal FROM heart_disease GROUP BY thal ORDER BY COUNT(*) DESC LIMIT 1) AS mode_thal
+
+    FROM heart_disease;
