@@ -1,0 +1,59 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the data
+df = pd.read_csv('cleanheart_disease.csv')
+
+# A list of tuples with the variables you want to plot.
+# Each tuple contains (column for x-axis, column for y-axis)
+scatter_pairs = [
+    ('age', 'trestbps'),  # Age vs. Resting Blood Pressure
+    ('age', 'chol'),      # Age vs. Serum Cholestoral
+    ('years', 'trestbps'), # Smoking years vs. Resting Blood Pressure
+    ('years', 'chol'),     # Smoking years vs. Cholesterol levels
+    ('trestbps', 'chol')  # Resting Blood Pressure vs. Cholesterol levels
+]
+
+# Function to create scatter plots
+def create_scatter_plot(data, x_column, y_column):
+    plt.figure(figsize=(10, 5))
+    plt.scatter(data[x_column], data[y_column], marker='o')
+    plt.title(f'Scatter Plot of {x_column} vs {y_column}')
+    plt.xlabel(x_column)
+    plt.ylabel(y_column)
+    plt.grid(True)
+    plt.show()
+
+# Create and display scatter plots
+for x_col, y_col in scatter_pairs:
+    df_cleaned = df.dropna(subset=[x_col, y_col])
+    create_scatter_plot(df_cleaned, x_col, y_col)
+
+# A list of columns for which you want to create box plots.
+# Assuming 'sex', 'cp', 'fbs', 'restecg', and 'exang' are categorical variables you are interested in.
+box_columns = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+
+# Function to create box plots
+def create_box_plot(data, column):
+    plt.figure(figsize=(10, 5))
+    data = data.dropna(subset=[column])
+    plt.boxplot(data[column])
+    plt.title(f'Box Plot of {column}')
+    plt.ylabel(column)
+    plt.show()
+
+# Create and display box plots
+for col in box_columns:
+    create_box_plot(df, col)
+
+#The scatter plots provide a valuable snapshot of your data, pointing out areas where additional cleaning is necessary.
+#Seeing outliers suggests there are data points that don't align with expected natural variations, which might require
+#validation or removal to avoid skewing further analysis. Ensuring that all values fall within realistic physiological
+#ranges is also crucial. Once the dataset is pruned of these anomalies, it'll be in better shape for more advanced
+#statistical techniques and modeling, giving a more accurate picture of the underlying health trends and relationships.
+
+
+
+
+
+
