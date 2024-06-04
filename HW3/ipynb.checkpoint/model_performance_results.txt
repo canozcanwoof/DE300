@@ -1,0 +1,9 @@
+Model Performance:
+              Model  Test Accuracy                                                                                            CV Scores  Mean CV Score  Standard Deviation CV Score
+Logistic Regression       0.844444  [0.7962962962962963, 0.7654320987654321, 0.808641975308642, 0.8148148148148148, 0.7639751552795031]       0.789832                     0.021371
+      Decision Tree       0.722222 [0.7283950617283951, 0.6728395061728395, 0.6728395061728395, 0.6604938271604939, 0.6956521739130435]       0.686044                     0.024031
+      Random Forest       0.811111 [0.7839506172839507, 0.7592592592592593, 0.8148148148148148, 0.7962962962962963, 0.8074534161490683]       0.792355                     0.019565
+                SVM       0.711111  [0.7654320987654321, 0.6111111111111112, 0.6604938271604939, 0.691358024691358, 0.7204968944099379]       0.689778                     0.052375
+
+Best Model:
+The best model is Random Forest with a test set accuracy of 0.81 and a mean cross-validation score of 0.79. This model was selected based on the highest mean cross-validation score, indicating better generalization to unseen data.
